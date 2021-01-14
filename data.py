@@ -1,6 +1,6 @@
 import pandas as pd
 from selenium import webdriver
-import time,os
+import time
 
 
 # 查询商品
@@ -14,14 +14,14 @@ def get_product(keyword):
 # 模拟鼠标滚动
 def drop_down():
     for i in range(1, 10):
-        time.sleep(0.5)
+        time.sleep(0.3)
         j = i / 10
         js = 'document.documentElement.scrollTop=document.documentElement.scrollHeight * %s' % j
         driver.execute_script(js)
 
 
 # 解析数据
-def analyse_date():
+def analyse_data():
     rows=pd.DataFrame()
     lis = driver.find_elements_by_css_selector('.gl-item')
     for li in lis:
@@ -56,9 +56,9 @@ if __name__ == "__main__":
     keyword=input('请输入要查询的商品名称：\n')
     get_product(keyword)
     data = pd.DataFrame()
-    for i in range(0, 3):
+    for i in range(0, 5):
         drop_down()
-        data = data.append(analyse_date())
+        data = data.append(analyse_data())
         nextpage()
     print(data)
     data.to_csv('data.csv', index=False,encoding='utf-8-sig') # gb2312 也可
